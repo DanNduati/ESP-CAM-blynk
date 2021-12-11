@@ -17,7 +17,6 @@
 #include "camera_pins.h"
 
 
-#define LED 21
 #define RADAR 12
 
 const char* ssid = "warazi";
@@ -31,18 +30,14 @@ void startCameraServer();
 
 void capture()
 {
-  digitalWrite(LED,HIGH);
   uint32_t number = random(40000000);
   Blynk.notify("Here is the image that was captured..");
   Serial.println("http://"+my_Local_IP+"/capture?_cb="+ (String)number);
   Blynk.setProperty(V1, "urls", "http://"+my_Local_IP+"/capture?_cb="+(String)number);
-  delay(1000);
-  digitalWrite(LED,LOW);
-  
+  delay(1000);  
 }
 void setup() {
   Serial.begin(115200);
-  pinMode(LED,OUTPUT);
   Serial.setDebugOutput(true);
   Serial.println();
 
