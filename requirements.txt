@@ -1,0 +1,25 @@
+Hi Ianwachirachege,
+I have not decided on a specific budget but will see what the quotes are and will then base my decision on time to completion and cost.
+I am using an ESP32 cam, an RCWL-0516 microwave sensor, and a 1 inch/25.3mm square 2-wire fan. I want to use Blynk Edgent so that WiFi can be changed without having to upload a new sketch. I want to be able to use Blynk App to send push notifications that the sensor detected something and turned the camera on. I want to be able to go into the app to livestream what the camera sees.
+Here is the basic use case:
+1. A fan turns on every 30 minutes for 2 seconds.
+2. Sensor detects movement and turns on camera pin 12
+3. Camera takes picture
+4. Push notice is sent to Blynk App
+5. Picture taken by camera can be seen in app
+6. End user can click video stream button in Blynk App to see what the camera is recording in real time
+
+Here are places where I found code that I was trying to combine but kept running into problem. Maybe this will make it easier.
+https://www.elec-cafe.com/esp32-cam-blynk-motion-sensor-rcwl-0516-with-line-notification/
+https://create.arduino.cc/projecthub/Monstermotte/make-a-fan-controller-with-arduino-b5436d
+
+I am using an ESP32 cam, an RCWL-0516 microwave sensor, and a 1 inch/25.3mm square 2-wire fan. I want to use Blynk Edgent so that WiFi can be changed without having to upload a new sketch. I want to be able to use Blynk App to send push notifications that the sensor detected something and turned the camera on. I want to be able to go into the app to livestream what the camera sees.
+Here is the basic use case:
+1. A fan turns on every 30 minutes for 2 seconds.
+2. Sensor detects movement and turns on camera pin 12
+3. Camera takes picture
+4. Push notice is sent to Blynk App
+5. Picture taken by camera can be seen in app
+6. End user can click video stream button in Blynk App to see what the camera is recording in real time
+
+All libraries from libraries already existing on Arduino and/or GitHub platforms.
