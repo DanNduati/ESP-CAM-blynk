@@ -11,16 +11,16 @@
 OV2640 cam;
 
 //wifi
-#define SSID1 "warazi"
-#define PWD1 "warazi@123"
+#define SSID1 "Warazi"
+#define PWD1 "Warazi@123"
 
 //microwave sensor
-#define RADAR 12
+#define RADAR 15
 
 //fan
-#define fanPin 3
+#define fanPin 4
 unsigned long previousMillis = 0;
-const long interval = 1800000; // 30 minutes --> 30min * 60sec/min * 1000ms/sec = 1800000ms
+const long interval = 10000; // 30 minutes --> 30min * 60sec/min * 1000ms/sec = 1800000ms
 
 //blynk -> for line notification
 char auth[] = "up7POinHqCRoXgZzL-f_yZKvLIINih-2";
@@ -154,6 +154,7 @@ void setup()
   server.on("/jpg", HTTP_GET, handle_jpg);
   server.onNotFound(handleNotFound);
   server.begin();
+  Blynk.begin(auth, SSID1, PWD1);
 }
 
 void switchFan() {
@@ -166,14 +167,14 @@ void loop()
 {
   unsigned long currentMillis = millis();
   Blynk.run();
-  server.handleClient();
+  server.handleClient();  Serial.println(digitalRead(RADAR));
   if (currentMillis - previousMillis >= interval) {
     // save the last time you turned on the fan
     previousMillis = currentMillis;
     Serial.println("Switching fan on");
     switchFan();
   }
-  if(digitalRead(RADAR) == HIGH){
+  if (digitalRead(RADAR) == LOW) {
     notifyMotion();
   }
 }
