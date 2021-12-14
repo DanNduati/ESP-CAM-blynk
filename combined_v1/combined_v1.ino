@@ -9,6 +9,9 @@
 #define CAMERA_MODEL_AI_THINKER
 #include "camera_pins.h"
 OV2640 cam;
+//picture notification
+String my_Local_IP;
+void startCameraServer();
 
 //wifi
 #define SSID1 "Warazi"
@@ -38,7 +41,17 @@ const int cntLen = strlen(CTNTTYPE);
 
 
 void notifyMotion() {
-  Blynk.notify("Motion Detected open to view stream!");
+  Serial.println("Sent notification");
+  Blynk.notify("Motion Detected open to view picture and stream!");
+}
+
+void capture(){
+  uint32_t number = random(40000000);
+  Blynk.notify("Here is the image that was captured..");
+  Serial.println("image captured");
+  Serial.println("http://"+my_Local_IP+"/capture?_cb="+ (String)number);
+  Blynk.setProperty(V1, "urls", "http://"+my_Local_IP+"/capture?_cb="+(String)number);
+  delay(1000);
 }
 
 void handle_jpg_stream(void)
@@ -127,10 +140,6 @@ void setup()
   config.jpeg_quality = 12;
   config.fb_count = 2;
 
-#if defined(CAMERA_MODEL_ESP_EYE)
-  pinMode(13, INPUT_PULLUP);
-  pinMode(14, INPUT_PULLUP);
-#endif
 
   cam.init(config);
 
@@ -144,6 +153,7 @@ void setup()
     Serial.print(F("."));
   }
   ip = WiFi.localIP();
+  my_Local_IP = ip.toString();
   Serial.println(F("WiFi connected"));
   Serial.println("");
   Serial.println(ip);
@@ -154,6 +164,13 @@ void setup()
   server.on("/jpg", HTTP_GET, handle_jpg);
   server.onNotFound(handleNotFound);
   server.begin();
+
+  //camera server
+  startCameraServer();
+
+  Serial.print("Camera Ready! Use 'http://");
+  Serial.print(ip);
+  Serial.println("' to connect");
   Blynk.begin(auth, SSID1, PWD1);
 }
 
@@ -167,7 +184,7 @@ void loop()
 {
   unsigned long currentMillis = millis();
   Blynk.run();
-  server.handleClient();  Serial.println(digitalRead(RADAR));
+  server.handleClient(); 
   if (currentMillis - previousMillis >= interval) {
     // save the last time you turned on the fan
     previousMillis = currentMillis;
@@ -176,5 +193,6 @@ void loop()
   }
   if (digitalRead(RADAR) == LOW) {
     notifyMotion();
+    capture();
   }
 }
